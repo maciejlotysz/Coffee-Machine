@@ -19,6 +19,26 @@ public class MachineResources {
         return water;
     }
 
+    public void setWater(int water) {
+        this.water = water;
+    }
+
+    public void setMilk(int milk) {
+        this.milk = milk;
+    }
+
+    public void setBeans(int beans) {
+        this.beans = beans;
+    }
+
+    public void setCups(int cups) {
+        this.cups = cups;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
     public int getMilk() {
         return milk;
     }
