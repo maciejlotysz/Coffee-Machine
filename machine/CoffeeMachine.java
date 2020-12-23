@@ -2,47 +2,11 @@ package machine;
 
 import java.util.Scanner;
 
-public class MachineResources {
-    private int water; // = 400;
-    private int milk; // = 540;
-    private int beans; // = 120;
-    private int cups; // = 9;
-    private int money; // = 550;
-
-    public MachineResources(int water, int milk, int beans, int cups, int money) {
-        this.water = water;
-        this.milk = milk;
-        this.beans = beans;
-        this.cups = cups;
-        this.money = money;
-    }
-
-    public int getWater() {
-        return water;
-    }
-
-    public int getMilk() {
-        return milk;
-    }
-
-    public int getBeans() {
-        return beans;
-    }
-
-    public int getCups() {
-        return cups;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-}
-
 public class CoffeeMachine {
 
     public void Execute () {
         MachineResources machineResources = new MachineResources(400, 540, 102, 9, 200);
-        printSupplies();
+        printSupplies(machineResources);
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println();
@@ -56,16 +20,16 @@ public class CoffeeMachine {
 
             switch(action) {
                 case "buy":
-                    buyCoffee();
+                    buyCoffee(machineResources);
                     break;
                 case "fill":
-                    fillSupplies();
+                    machineResources = fillSupplies(machineResources);
                     break;
                 case "take":
-                    takeMoney();
+                    takeMoney(machineResources);
                     break;
                 case "remaining":
-                    printSupplies();
+                    printSupplies(machineResources);
                     break;
                 default:
                     System.out.println("Nie poprawne!");
@@ -90,6 +54,7 @@ public class CoffeeMachine {
         
         System.out.println();
         System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu: ");
+        Scanner scanner = new Scanner(System.in);
         String choice = scanner.nextLine();
         switch(choice) {
             case "1":
@@ -109,39 +74,42 @@ public class CoffeeMachine {
         }
     }
     
-    public static void fillSupplies(MachineResources machineRes) {
-        
+    public static MachineResources fillSupplies(MachineResources machineRes) {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Write how many ml of water do you want to add:");
         int addWater = scanner.nextInt();
-        water += addWater;
         System.out.println("Write how many ml of milk do you want to add:");
         int addMilk = scanner.nextInt();
-        milk += addMilk;
         System.out.println("Write how many grams of coffee beans do you want to add: ");
         int addBeans = scanner.nextInt();
-        beans += addBeans;
         System.out.println("Write how many disposable cups of coffee do you want to add:");
         int addCups = scanner.nextInt();
-        cups += addCups;
+
+        return new MachineResources(
+                machineRes.getWater()+addWater,
+                machineRes.getMilk()+addMilk,
+                machineRes.getBeans()+addBeans,
+                machineRes.getCups()+addCups,
+                machineRes.getMoney());
     }
     
     public static void takeMoney(MachineResources machineRes) {
         
-        System.out.println("I gave you $" + money);
-        money -= money;
+        System.out.println("I gave you $" + machineRes.getMoney());
+        machineRes.setMoney(0);
     }
     
     public static void checkSuppliesEspresso(MachineResources machineRes) {
         
-        if (water >= 250 && beans >= 16 && cups >= 1) {
+        if (machineRes.getWater() >= 250 && machineRes.getBeans() >= 16 && machineRes.getCups() >= 1) {
             System.out.println("I have enough resources, making you a coffee!");
-            water -= 250;
-            beans -= 16;
-            cups -= 1;
-            money += 4;
-        } else if (water < 250) {
+            machineRes.setWater(machineRes.getWater() - 250);
+            machineRes.setBeans(machineRes.getBeans() - 16);
+            machineRes.setCups(machineRes.getCups() - 1);
+            machineRes.setMoney(machineRes.getMoney() + 4);
+        } else if (machineRes.getWater() < 250) {
             System.out.println("Sorry, not enough water!");
-        } else if (beans < 16) {
+        } else if (machineRes.getBeans() < 16) {
             System.out.println("Sorry, not enough beans!"); 
         } else {
             System.out.println("Sorry, not enough cups!");
@@ -150,18 +118,18 @@ public class CoffeeMachine {
     
     public static void checkSuppliesLatte(MachineResources machineRes) {
         
-        if (water >= 350 && milk >= 75 && beans >= 20 && cups >= 1) {
+        if (machineRes.getWater() >= 350 && machineRes.getMilk() >= 75 && machineRes.getBeans() >= 20 && machineRes.getCups() >= 1) {
             System.out.println("I have enough resources, making you a coffee!");
-            water -= 350;
-            milk -= 75;
-            beans -= 20;
-            cups -= 1;
-            money += 7;
-        } else if (water < 350) {
+            machineRes.setWater(machineRes.getWater() - 350);
+            machineRes.setMilk(machineRes.getMilk() - 75);
+            machineRes.setBeans(machineRes.getBeans() - 20);
+            machineRes.setCups(machineRes.getCups() - 1);
+            machineRes.setMoney(machineRes.getMoney() + 7);
+        } else if (machineRes.getWater() < 350) {
             System.out.println("Sorry, not enough water!"); 
-        } else if (milk < 75) {
+        } else if (machineRes.getMilk() < 75) {
             System.out.println("Sorry, not enough milk!");
-        } else if (beans < 20) {
+        } else if (machineRes.getBeans() < 20) {
             System.out.println("Sorry, not enough beans!");
         } else {
             System.out.println("Sorry, not enough cups!");
@@ -169,19 +137,19 @@ public class CoffeeMachine {
     }
     
     public static void checkSuppliesCappuccino(MachineResources machineRes) {
-        
-        if (water >= 200 && milk >= 100 && beans >= 12 && cups >= 1) {
+
+        if (machineRes.getWater() >= 200 && machineRes.getMilk() >= 100 && machineRes.getBeans() >= 12 && machineRes.getCups() >= 1) {
             System.out.println("I have enough resources, making you a coffee!");
-            water -= 200;
-            milk -= 100;
-            beans -= 12;
-            cups -= 1;
-            money += 6;
-        } else if (water < 200) {
-            System.out.println("Sorry, not enough water!");     
-        } else if (milk < 100) {
+            machineRes.setWater(machineRes.getWater() - 200);
+            machineRes.setMilk(machineRes.getMilk() - 100);
+            machineRes.setBeans(machineRes.getBeans() - 12);
+            machineRes.setCups(machineRes.getCups() - 1);
+            machineRes.setMoney(machineRes.getMoney() + 6);
+        } else if (machineRes.getWater() < 200) {
+            System.out.println("Sorry, not enough water!");
+        } else if (machineRes.getMilk() < 100) {
             System.out.println("Sorry, not enough milk!");
-        } else if (beans < 12) {
+        } else if (machineRes.getBeans() < 12) {
             System.out.println("Sorry, not enough beans!");
         } else {
             System.out.println("Sorry, not enough cups!");
