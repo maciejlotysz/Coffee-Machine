@@ -1,3 +1,5 @@
+package machine;
+
 public class MachineResources {
     private int water; // = 400;
     private int milk; // = 540;

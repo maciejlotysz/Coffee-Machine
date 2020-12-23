@@ -6,7 +6,7 @@ public class CoffeeMachine {
 
     public void Execute () {
         MachineResources machineResources = new MachineResources(400, 540, 102, 9, 200);
-        printSupplies();
+        printSupplies(machineResources);
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println();
@@ -20,16 +20,16 @@ public class CoffeeMachine {
 
             switch(action) {
                 case "buy":
-                    buyCoffee();
+                    buyCoffee(machineResources;
                     break;
                 case "fill":
-                    fillSupplies();
+                    fillSupplies(machineResources);
                     break;
                 case "take":
-                    takeMoney();
+                    takeMoney(machineResources);
                     break;
                 case "remaining":
-                    printSupplies();
+                    printSupplies(machineResources);
                     break;
                 default:
                     System.out.println("Nie poprawne!");
