@@ -2,26 +2,58 @@ package machine;
 
 import java.util.Scanner;
 
+public class MachineResources {
+    private int water; // = 400;
+    private int milk; // = 540;
+    private int beans; // = 120;
+    private int cups; // = 9;
+    private int money; // = 550;
+
+    public MachineResources(int water, int milk, int beans, int cups, int money) {
+        this.water = water;
+        this.milk = milk;
+        this.beans = beans;
+        this.cups = cups;
+        this.money = money;
+    }
+
+    public int getWater() {
+        return water;
+    }
+
+    public int getMilk() {
+        return milk;
+    }
+
+    public int getBeans() {
+        return beans;
+    }
+
+    public int getCups() {
+        return cups;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+}
+
 public class CoffeeMachine {
-    
-    static Scanner scanner = new Scanner(System.in);
-    static int water = 400;
-    static int milk = 540;
-    static int beans = 120;
-    static int cups = 9;
-    static int money = 550;
-    
-    public static void main(String[] args) {
-        
+
+    public void Execute () {
+        MachineResources machineResources = new MachineResources(400, 540, 102, 9, 200);
+        printSupplies();
+        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println();
             System.out.println("Write action (buy, fill, take, remaining, exit): ");
+            // String action = scanner.next();
             String action = scanner.nextLine();
-            
+
             if (action.equals("exit")) {
                 break;
             }
-            
+
             switch(action) {
                 case "buy":
                     buyCoffee();
@@ -36,36 +68,38 @@ public class CoffeeMachine {
                     printSupplies();
                     break;
                 default:
-                    System.out.println("Invalid!");
+                    System.out.println("Nie poprawne!");
                     break;
             }
         }
     }
-    
-    public static void printSupplies() {
-        
-        System.out.println("The coffee machine has: ");
-        System.out.println(water + " of water");
-        System.out.println(milk + " of milk");
-        System.out.println(beans + " of coffee beans");
-        System.out.println(cups + " of disposable cups");
-        System.out.println(money + " of money");
+
+    public static void main(String[] args) {
+        new CoffeeMachine().Execute();
     }
     
-    public static void buyCoffee() {
+    public static void printSupplies(MachineResources machineRes) {
+        
+        System.out.println("====== Coffee machine Status ======");
+        System.out.printf("| water: %d ml | milk: %d ml | beans: %d g | cups: %d | money: $%d.00 |\n",
+                machineRes.getWater(), machineRes.getMilk(), machineRes.getBeans(),
+                machineRes.getCups(), machineRes.getMoney());
+    }
+    
+    public static void buyCoffee(MachineResources machineRes) {
         
         System.out.println();
         System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu: ");
         String choice = scanner.nextLine();
         switch(choice) {
             case "1":
-                checkSuppliesEspresso();
+                checkSuppliesEspresso(machineRes);
                 break;
             case "2":
-                checkSuppliesLatte();
+                checkSuppliesLatte(machineRes);
                 break;
             case "3":
-                checkSuppliesCappuccino();
+                checkSuppliesCappuccino(machineRes);
                 break;
             case "back": 
                 break; 
@@ -75,7 +109,7 @@ public class CoffeeMachine {
         }
     }
     
-    public static void fillSupplies() {
+    public static void fillSupplies(MachineResources machineRes) {
         
         System.out.println("Write how many ml of water do you want to add:");
         int addWater = scanner.nextInt();
@@ -91,13 +125,13 @@ public class CoffeeMachine {
         cups += addCups;
     }
     
-    public static void takeMoney() {
+    public static void takeMoney(MachineResources machineRes) {
         
         System.out.println("I gave you $" + money);
         money -= money;
     }
     
-    public static void checkSuppliesEspresso() {
+    public static void checkSuppliesEspresso(MachineResources machineRes) {
         
         if (water >= 250 && beans >= 16 && cups >= 1) {
             System.out.println("I have enough resources, making you a coffee!");
@@ -114,7 +148,7 @@ public class CoffeeMachine {
         }
     }
     
-    public static void checkSuppliesLatte() {
+    public static void checkSuppliesLatte(MachineResources machineRes) {
         
         if (water >= 350 && milk >= 75 && beans >= 20 && cups >= 1) {
             System.out.println("I have enough resources, making you a coffee!");
@@ -134,7 +168,7 @@ public class CoffeeMachine {
         }
     }
     
-    public static void checkSuppliesCappuccino() {
+    public static void checkSuppliesCappuccino(MachineResources machineRes) {
         
         if (water >= 200 && milk >= 100 && beans >= 12 && cups >= 1) {
             System.out.println("I have enough resources, making you a coffee!");
